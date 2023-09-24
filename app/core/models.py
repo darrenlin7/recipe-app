@@ -1,6 +1,7 @@
 """
 Database models.
 """
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -31,7 +32,7 @@ class UserManager(BaseUserManager):
 
         return user
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin): #we are extending the base functionality of django users
     """User in the system."""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
@@ -41,3 +42,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+class Recipe(models.Model): #models.Model is the basic Model base class
+    """Recipe object."""
+    # We are using the foreign key of the user to connect recipe model to user model
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, #AUTH_USER_MODEL is defined in settings.py
+        on_delete=models.CASCADE, #this means if the user gets deleted, it will also delete all the recipes for that user
+    )
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    time_minutes = models.IntegerField()
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    link = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.title
