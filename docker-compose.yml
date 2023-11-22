@@ -10,6 +10,7 @@ services:
       - "8000:8000" #port mappings: this maps port 8000 on local machine to 8000 in the container
     volumes:
       - ./app:/app
+      - dev-static-data:/vol/web #this matches the volume to hold static data. 
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
@@ -34,3 +35,4 @@ services:
 
 volumes:
   dev-db-data:
+  dev-static-data:
