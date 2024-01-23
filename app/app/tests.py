@@ -26,3 +26,7 @@ class CalcTests(SimpleTestCase):
     def test_multiply_numbers(self):
         res = calc.multiply(3,6)
         self.assertEqual(res, 18)
+        res2 = calc.multiply(0,8)
+        self.assertEqual(res2, 0)
+        res3 = calc.multiply()
+
